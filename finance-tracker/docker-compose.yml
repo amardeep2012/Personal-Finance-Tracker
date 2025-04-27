@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: youruser
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: finance_tracker
+    ports:
+      - "5432:5432"
+
+  # app:
+  #   build: .
+  #   ports:
+  #     - "8000:8000"
+  #   environment:
+  #     DATABASE_URL: postgres://youruser:yourpassword@db/finance_tracker
+  #     SECRET_KEY: yourverysecretkey
+  #   depends_on:
+  #     - db
