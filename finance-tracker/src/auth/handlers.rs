@@ -1,6 +1,5 @@
-use rocket::{post, routes, serde::json::Json};
+use rocket::{post, serde::json::Json};
 use rocket::response::status::BadRequest;
-use rocket::http::Status;
 use crate::auth::{AuthResponse, LoginResponse};
 // Removed redundant import of UserInput
 
@@ -20,9 +19,9 @@ pub async fn login_route(user_input: Json<UserLoginInput>) -> Result<Json<LoginR
     }
 }
 
-pub fn routes() -> Vec<rocket::Route> {
-    routes![signup_route, login_route]
-}
+// pub fn routes() -> Vec<rocket::Route> {
+//     routes![signup_route, login_route]
+// }
 
 
 use diesel::prelude::*;
@@ -66,6 +65,6 @@ pub async fn login(user_input: UserLoginInput) -> Result<LoginResponse, String> 
     }
 
     // Generate JWT
-    let token = create_jwt(&user_input.email);
+    let _token = create_jwt(&user_input.email);
     Ok(LoginResponse{ message: "Login successful".to_string(),})
 }

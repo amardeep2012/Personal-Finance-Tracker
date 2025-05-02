@@ -1,26 +1,30 @@
 #[macro_use] extern crate rocket;
 
 use rocket::launch;
-// use rocket::serde::json::Json;
 use rocket::fairing::AdHoc;
-// use rocket::tokio::sync::Mutex;
-// use std::sync::Arc;
+
 
 mod db;
 mod auth;
-
+mod categories;
+mod transactions;
+mod reports;
+use categories::handlers::{create_category, list_categories};
+use transactions::handlers::{create_transaction, list_transactions};
 use auth::{signup_route, login_route};
+use reports::handlers::category_summary;
 
 #[launch]
 fn rocket() -> _ {
     dotenv::dotenv().ok(); // Load environment variables from .env
     rocket::build()
-        .mount("/auth", routes![signup_route, login_route]) // Mount auth routes
+        .mount("/auth", routes![signup_route, login_route]) 
+        .mount("/categories", routes![create_category, list_categories])
+        .mount("/transactions", routes![create_transaction, list_transactions]) 
+        .mount("/reports", routes![category_summary])
+        // Mount auth routes
         .attach(AdHoc::on_ignite("Database Connection", |rocket| async {
-            // let database_url = std::env::var("DATABASE_URL")
-                // .expect("DATABASE_URL must be set in .env");
 
-            // Test DB connection
             db::establish_connection();
             println!("✅ Successfully connected to database!");
 
